@@ -2,6 +2,7 @@ FROM tensorflow/tensorflow:latest-gpu-py3
 
 MAINTAINER Masaharu TASHIRO <masatsr.kit@gmail.com>
 
+# Update nodejs & npm
 RUN apt-get update && apt-get install -y --no-install-recommends \
     nodejs \
     npm \
@@ -16,8 +17,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
+# Install Jupyter Lab
 RUN pip install jupyterlab
 RUN echo '#!/usr/bin/env bash \n jupyter lab "$@"' > /run_jupyter.sh
+
+# Copy sample notebooks.
+COPY notebooks /notebooks
 
 #CMD ["/run_jupyter.sh", "--allow-root"]
     
