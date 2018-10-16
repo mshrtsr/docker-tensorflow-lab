@@ -19,7 +19,20 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Install Jupyter Lab
 RUN pip install jupyterlab
+
+# Run Script
 RUN echo '#!/usr/bin/env bash \n jupyter lab "$@"' > /run_jupyter.sh
+
+# Base url setting
+RUN { \
+  echo "if 'BASEURL' in os.environ:"; \
+  echo "  baseurl = os.environ['BASEURL']"; \
+  echo "  if baseurl:"; \
+  echo "    c.NotebookApp.base_url = baseurl"; \
+  echo "  else:"; \
+  echo "    c.NotebookApp.base_url = ''"; \
+  echo "  del os.environ['BASEURL']"; \
+} | tee -a /root/.jupyter/jupyter_notebook_config.py
 
 # Copy sample notebooks.
 COPY notebooks /notebooks
