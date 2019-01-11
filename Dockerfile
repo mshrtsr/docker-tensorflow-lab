@@ -14,8 +14,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
  && apt-get purge -y \
     nodejs \
     npm \
- && apt-get clean \
- && rm -rf /var/lib/apt/lists/*
+ && apt-get -y autoremove \
+ && apt-get -y clean \
+ && rm -rf /var/lib/apt/lists* /var/tmp/* /tmp/*
 
 # Install Jupyter Lab
 RUN pip install jupyterlab
